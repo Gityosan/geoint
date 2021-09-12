@@ -55,6 +55,24 @@
           :clickable="true"
         />
       </GmapMap>
+      <v-card-subtitle>メイン写真</v-card-subtitle>
+      <template v-if="topImage.uploadImageUrl">
+        <img :src="topImage.uploadImageUrl" width="100%" />
+      </template>
+      <template v-else>
+        <img src="@/static/img/no_image.png" width="100%" />
+      </template>
+      <v-file-input
+        v-model="topImage.inputImage"
+        accept="image/*"
+        show-size
+        :label="topImage.fullName || '画像をアップロード'"
+        prepend-icon="mdi-image"
+        @change="onTopImagePicked"
+        @click="topImage.isUpdated = true"
+        outlined
+        :rules="[required, fileMax5M]"
+      ></v-file-input>
       <v-text-field
         class="ma-3"
         v-model.trim="event.name"
