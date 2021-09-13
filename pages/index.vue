@@ -57,8 +57,16 @@
             position: google.maps.ControlPosition.TOP_RIGHT
           },
           styles: []
-        }
+        },
+        events: []
       }
+    },
+    async created() {
+      await API.graphql({
+        query: listEvents
+      }).then(async (res) => {
+        this.events = await res.data.listEvents.items
+      })
     }
   }
 </script>
