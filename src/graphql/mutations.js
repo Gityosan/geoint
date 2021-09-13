@@ -7,7 +7,7 @@ export const createUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     createUser(input: $input, condition: $condition) {
-      userId
+      id
       name
       introduction
       lat
@@ -17,11 +17,14 @@ export const createUser = /* GraphQL */ `
       userImageId
       status
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       event {
         items {
-          eventId
+          id
           userId
           name
           eventImageId
@@ -37,13 +40,17 @@ export const createUser = /* GraphQL */ `
           to
           reported
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       icon {
-        userImageId
+        id
         name
         type
         size
@@ -51,6 +58,9 @@ export const createUser = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -63,7 +73,7 @@ export const updateUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     updateUser(input: $input, condition: $condition) {
-      userId
+      id
       name
       introduction
       lat
@@ -73,11 +83,14 @@ export const updateUser = /* GraphQL */ `
       userImageId
       status
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       event {
         items {
-          eventId
+          id
           userId
           name
           eventImageId
@@ -93,13 +106,17 @@ export const updateUser = /* GraphQL */ `
           to
           reported
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       icon {
-        userImageId
+        id
         name
         type
         size
@@ -107,6 +124,9 @@ export const updateUser = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -119,7 +139,7 @@ export const deleteUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     deleteUser(input: $input, condition: $condition) {
-      userId
+      id
       name
       introduction
       lat
@@ -129,11 +149,14 @@ export const deleteUser = /* GraphQL */ `
       userImageId
       status
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       event {
         items {
-          eventId
+          id
           userId
           name
           eventImageId
@@ -149,13 +172,17 @@ export const deleteUser = /* GraphQL */ `
           to
           reported
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       icon {
-        userImageId
+        id
         name
         type
         size
@@ -163,6 +190,9 @@ export const deleteUser = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -175,7 +205,7 @@ export const createEvent = /* GraphQL */ `
     $condition: ModelEventConditionInput
   ) {
     createEvent(input: $input, condition: $condition) {
-      eventId
+      id
       userId
       name
       eventImageId
@@ -191,21 +221,28 @@ export const createEvent = /* GraphQL */ `
       to
       reported
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       comment {
         items {
-          commentId
+          id
           eventId
           value
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       image {
-        eventImageId
+        id
         name
         type
         size
@@ -213,6 +250,9 @@ export const createEvent = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -225,7 +265,7 @@ export const updateEvent = /* GraphQL */ `
     $condition: ModelEventConditionInput
   ) {
     updateEvent(input: $input, condition: $condition) {
-      eventId
+      id
       userId
       name
       eventImageId
@@ -241,21 +281,28 @@ export const updateEvent = /* GraphQL */ `
       to
       reported
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       comment {
         items {
-          commentId
+          id
           eventId
           value
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       image {
-        eventImageId
+        id
         name
         type
         size
@@ -263,6 +310,9 @@ export const updateEvent = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -275,7 +325,7 @@ export const deleteEvent = /* GraphQL */ `
     $condition: ModelEventConditionInput
   ) {
     deleteEvent(input: $input, condition: $condition) {
-      eventId
+      id
       userId
       name
       eventImageId
@@ -291,21 +341,28 @@ export const deleteEvent = /* GraphQL */ `
       to
       reported
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       comment {
         items {
-          commentId
+          id
           eventId
           value
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       image {
-        eventImageId
+        id
         name
         type
         size
@@ -313,6 +370,9 @@ export const deleteEvent = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -325,10 +385,10 @@ export const createComment = /* GraphQL */ `
     $condition: ModelCommentConditionInput
   ) {
     createComment(input: $input, condition: $condition) {
-      commentId
+      id
       eventId
       author {
-        userId
+        id
         name
         introduction
         lat
@@ -338,13 +398,17 @@ export const createComment = /* GraphQL */ `
         userImageId
         status
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         event {
           nextToken
+          startedAt
         }
         icon {
-          userImageId
+          id
           name
           type
           size
@@ -352,12 +416,18 @@ export const createComment = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       value
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -369,10 +439,10 @@ export const updateComment = /* GraphQL */ `
     $condition: ModelCommentConditionInput
   ) {
     updateComment(input: $input, condition: $condition) {
-      commentId
+      id
       eventId
       author {
-        userId
+        id
         name
         introduction
         lat
@@ -382,13 +452,17 @@ export const updateComment = /* GraphQL */ `
         userImageId
         status
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         event {
           nextToken
+          startedAt
         }
         icon {
-          userImageId
+          id
           name
           type
           size
@@ -396,12 +470,18 @@ export const updateComment = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       value
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -413,10 +493,10 @@ export const deleteComment = /* GraphQL */ `
     $condition: ModelCommentConditionInput
   ) {
     deleteComment(input: $input, condition: $condition) {
-      commentId
+      id
       eventId
       author {
-        userId
+        id
         name
         introduction
         lat
@@ -426,13 +506,17 @@ export const deleteComment = /* GraphQL */ `
         userImageId
         status
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         event {
           nextToken
+          startedAt
         }
         icon {
-          userImageId
+          id
           name
           type
           size
@@ -440,12 +524,18 @@ export const deleteComment = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       value
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -457,7 +547,7 @@ export const createUserImage = /* GraphQL */ `
     $condition: ModelUserImageConditionInput
   ) {
     createUserImage(input: $input, condition: $condition) {
-      userImageId
+      id
       name
       type
       size
@@ -465,6 +555,9 @@ export const createUserImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -476,7 +569,7 @@ export const updateUserImage = /* GraphQL */ `
     $condition: ModelUserImageConditionInput
   ) {
     updateUserImage(input: $input, condition: $condition) {
-      userImageId
+      id
       name
       type
       size
@@ -484,6 +577,9 @@ export const updateUserImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -495,7 +591,7 @@ export const deleteUserImage = /* GraphQL */ `
     $condition: ModelUserImageConditionInput
   ) {
     deleteUserImage(input: $input, condition: $condition) {
-      userImageId
+      id
       name
       type
       size
@@ -503,6 +599,9 @@ export const deleteUserImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -514,7 +613,7 @@ export const createEventImage = /* GraphQL */ `
     $condition: ModelEventImageConditionInput
   ) {
     createEventImage(input: $input, condition: $condition) {
-      eventImageId
+      id
       name
       type
       size
@@ -522,6 +621,9 @@ export const createEventImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -533,7 +635,7 @@ export const updateEventImage = /* GraphQL */ `
     $condition: ModelEventImageConditionInput
   ) {
     updateEventImage(input: $input, condition: $condition) {
-      eventImageId
+      id
       name
       type
       size
@@ -541,6 +643,9 @@ export const updateEventImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -552,7 +657,7 @@ export const deleteEventImage = /* GraphQL */ `
     $condition: ModelEventImageConditionInput
   ) {
     deleteEventImage(input: $input, condition: $condition) {
-      eventImageId
+      id
       name
       type
       size
@@ -560,6 +665,9 @@ export const deleteEventImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }

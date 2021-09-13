@@ -4,7 +4,7 @@
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($owner: String) {
     onCreateUser(owner: $owner) {
-      userId
+      id
       name
       introduction
       lat
@@ -14,11 +14,14 @@ export const onCreateUser = /* GraphQL */ `
       userImageId
       status
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       event {
         items {
-          eventId
+          id
           userId
           name
           eventImageId
@@ -34,13 +37,17 @@ export const onCreateUser = /* GraphQL */ `
           to
           reported
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       icon {
-        userImageId
+        id
         name
         type
         size
@@ -48,6 +55,9 @@ export const onCreateUser = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -57,7 +67,7 @@ export const onCreateUser = /* GraphQL */ `
 export const onUpdateUser = /* GraphQL */ `
   subscription OnUpdateUser($owner: String) {
     onUpdateUser(owner: $owner) {
-      userId
+      id
       name
       introduction
       lat
@@ -67,11 +77,14 @@ export const onUpdateUser = /* GraphQL */ `
       userImageId
       status
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       event {
         items {
-          eventId
+          id
           userId
           name
           eventImageId
@@ -87,13 +100,17 @@ export const onUpdateUser = /* GraphQL */ `
           to
           reported
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       icon {
-        userImageId
+        id
         name
         type
         size
@@ -101,6 +118,9 @@ export const onUpdateUser = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -110,7 +130,7 @@ export const onUpdateUser = /* GraphQL */ `
 export const onDeleteUser = /* GraphQL */ `
   subscription OnDeleteUser($owner: String) {
     onDeleteUser(owner: $owner) {
-      userId
+      id
       name
       introduction
       lat
@@ -120,11 +140,14 @@ export const onDeleteUser = /* GraphQL */ `
       userImageId
       status
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       event {
         items {
-          eventId
+          id
           userId
           name
           eventImageId
@@ -140,13 +163,17 @@ export const onDeleteUser = /* GraphQL */ `
           to
           reported
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       icon {
-        userImageId
+        id
         name
         type
         size
@@ -154,6 +181,9 @@ export const onDeleteUser = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -163,7 +193,7 @@ export const onDeleteUser = /* GraphQL */ `
 export const onCreateEvent = /* GraphQL */ `
   subscription OnCreateEvent($owner: String) {
     onCreateEvent(owner: $owner) {
-      eventId
+      id
       userId
       name
       eventImageId
@@ -179,21 +209,28 @@ export const onCreateEvent = /* GraphQL */ `
       to
       reported
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       comment {
         items {
-          commentId
+          id
           eventId
           value
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       image {
-        eventImageId
+        id
         name
         type
         size
@@ -201,6 +238,9 @@ export const onCreateEvent = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -210,7 +250,7 @@ export const onCreateEvent = /* GraphQL */ `
 export const onUpdateEvent = /* GraphQL */ `
   subscription OnUpdateEvent($owner: String) {
     onUpdateEvent(owner: $owner) {
-      eventId
+      id
       userId
       name
       eventImageId
@@ -226,21 +266,28 @@ export const onUpdateEvent = /* GraphQL */ `
       to
       reported
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       comment {
         items {
-          commentId
+          id
           eventId
           value
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       image {
-        eventImageId
+        id
         name
         type
         size
@@ -248,6 +295,9 @@ export const onUpdateEvent = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -257,7 +307,7 @@ export const onUpdateEvent = /* GraphQL */ `
 export const onDeleteEvent = /* GraphQL */ `
   subscription OnDeleteEvent($owner: String) {
     onDeleteEvent(owner: $owner) {
-      eventId
+      id
       userId
       name
       eventImageId
@@ -273,21 +323,28 @@ export const onDeleteEvent = /* GraphQL */ `
       to
       reported
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       comment {
         items {
-          commentId
+          id
           eventId
           value
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       image {
-        eventImageId
+        id
         name
         type
         size
@@ -295,6 +352,9 @@ export const onDeleteEvent = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -304,10 +364,10 @@ export const onDeleteEvent = /* GraphQL */ `
 export const onCreateComment = /* GraphQL */ `
   subscription OnCreateComment($owner: String) {
     onCreateComment(owner: $owner) {
-      commentId
+      id
       eventId
       author {
-        userId
+        id
         name
         introduction
         lat
@@ -317,13 +377,17 @@ export const onCreateComment = /* GraphQL */ `
         userImageId
         status
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         event {
           nextToken
+          startedAt
         }
         icon {
-          userImageId
+          id
           name
           type
           size
@@ -331,12 +395,18 @@ export const onCreateComment = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       value
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -345,10 +415,10 @@ export const onCreateComment = /* GraphQL */ `
 export const onUpdateComment = /* GraphQL */ `
   subscription OnUpdateComment($owner: String) {
     onUpdateComment(owner: $owner) {
-      commentId
+      id
       eventId
       author {
-        userId
+        id
         name
         introduction
         lat
@@ -358,13 +428,17 @@ export const onUpdateComment = /* GraphQL */ `
         userImageId
         status
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         event {
           nextToken
+          startedAt
         }
         icon {
-          userImageId
+          id
           name
           type
           size
@@ -372,12 +446,18 @@ export const onUpdateComment = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       value
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -386,10 +466,10 @@ export const onUpdateComment = /* GraphQL */ `
 export const onDeleteComment = /* GraphQL */ `
   subscription OnDeleteComment($owner: String) {
     onDeleteComment(owner: $owner) {
-      commentId
+      id
       eventId
       author {
-        userId
+        id
         name
         introduction
         lat
@@ -399,13 +479,17 @@ export const onDeleteComment = /* GraphQL */ `
         userImageId
         status
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         event {
           nextToken
+          startedAt
         }
         icon {
-          userImageId
+          id
           name
           type
           size
@@ -413,12 +497,18 @@ export const onDeleteComment = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       value
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -427,7 +517,7 @@ export const onDeleteComment = /* GraphQL */ `
 export const onCreateUserImage = /* GraphQL */ `
   subscription OnCreateUserImage($owner: String) {
     onCreateUserImage(owner: $owner) {
-      userImageId
+      id
       name
       type
       size
@@ -435,6 +525,9 @@ export const onCreateUserImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -443,7 +536,7 @@ export const onCreateUserImage = /* GraphQL */ `
 export const onUpdateUserImage = /* GraphQL */ `
   subscription OnUpdateUserImage($owner: String) {
     onUpdateUserImage(owner: $owner) {
-      userImageId
+      id
       name
       type
       size
@@ -451,6 +544,9 @@ export const onUpdateUserImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -459,7 +555,7 @@ export const onUpdateUserImage = /* GraphQL */ `
 export const onDeleteUserImage = /* GraphQL */ `
   subscription OnDeleteUserImage($owner: String) {
     onDeleteUserImage(owner: $owner) {
-      userImageId
+      id
       name
       type
       size
@@ -467,6 +563,9 @@ export const onDeleteUserImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -475,7 +574,7 @@ export const onDeleteUserImage = /* GraphQL */ `
 export const onCreateEventImage = /* GraphQL */ `
   subscription OnCreateEventImage($owner: String) {
     onCreateEventImage(owner: $owner) {
-      eventImageId
+      id
       name
       type
       size
@@ -483,6 +582,9 @@ export const onCreateEventImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -491,7 +593,7 @@ export const onCreateEventImage = /* GraphQL */ `
 export const onUpdateEventImage = /* GraphQL */ `
   subscription OnUpdateEventImage($owner: String) {
     onUpdateEventImage(owner: $owner) {
-      eventImageId
+      id
       name
       type
       size
@@ -499,6 +601,9 @@ export const onUpdateEventImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -507,7 +612,7 @@ export const onUpdateEventImage = /* GraphQL */ `
 export const onDeleteEventImage = /* GraphQL */ `
   subscription OnDeleteEventImage($owner: String) {
     onDeleteEventImage(owner: $owner) {
-      eventImageId
+      id
       name
       type
       size
@@ -515,6 +620,9 @@ export const onDeleteEventImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }

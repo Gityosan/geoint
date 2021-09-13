@@ -2,9 +2,9 @@
 // this is an auto generated file. This will be overwritten
 
 export const getUser = /* GraphQL */ `
-  query GetUser($userId: ID!) {
-    getUser(userId: $userId) {
-      userId
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
       name
       introduction
       lat
@@ -14,11 +14,14 @@ export const getUser = /* GraphQL */ `
       userImageId
       status
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       event {
         items {
-          eventId
+          id
           userId
           name
           eventImageId
@@ -34,13 +37,17 @@ export const getUser = /* GraphQL */ `
           to
           reported
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       icon {
-        userImageId
+        id
         name
         type
         size
@@ -48,6 +55,9 @@ export const getUser = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -56,21 +66,21 @@ export const getUser = /* GraphQL */ `
 `;
 export const listUsers = /* GraphQL */ `
   query ListUsers(
-    $userId: ID
+    $id: ID
     $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
     $sortDirection: ModelSortDirection
   ) {
     listUsers(
-      userId: $userId
+      id: $id
       filter: $filter
       limit: $limit
       nextToken: $nextToken
       sortDirection: $sortDirection
     ) {
       items {
-        userId
+        id
         name
         introduction
         lat
@@ -80,13 +90,17 @@ export const listUsers = /* GraphQL */ `
         userImageId
         status
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         event {
           nextToken
+          startedAt
         }
         icon {
-          userImageId
+          id
           name
           type
           size
@@ -94,11 +108,15 @@ export const listUsers = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       nextToken
+      startedAt
     }
   }
 `;
@@ -118,7 +136,7 @@ export const listUserByOwner = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        userId
+        id
         name
         introduction
         lat
@@ -128,13 +146,17 @@ export const listUserByOwner = /* GraphQL */ `
         userImageId
         status
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         event {
           nextToken
+          startedAt
         }
         icon {
-          userImageId
+          id
           name
           type
           size
@@ -142,18 +164,76 @@ export const listUserByOwner = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncUsers = /* GraphQL */ `
+  query SyncUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUsers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        introduction
+        lat
+        lng
+        tag
+        acquaintance
+        userImageId
+        status
+        owner
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        event {
+          nextToken
+          startedAt
+        }
+        icon {
+          id
+          name
+          type
+          size
+          alt
+          url
+          identityId
+          owner
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
     }
   }
 `;
 export const getEvent = /* GraphQL */ `
-  query GetEvent($eventId: ID!) {
-    getEvent(eventId: $eventId) {
-      eventId
+  query GetEvent($id: ID!) {
+    getEvent(id: $id) {
+      id
       userId
       name
       eventImageId
@@ -169,21 +249,28 @@ export const getEvent = /* GraphQL */ `
       to
       reported
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       comment {
         items {
-          commentId
+          id
           eventId
           value
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
       image {
-        eventImageId
+        id
         name
         type
         size
@@ -191,6 +278,9 @@ export const getEvent = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -199,21 +289,21 @@ export const getEvent = /* GraphQL */ `
 `;
 export const listEvents = /* GraphQL */ `
   query ListEvents(
-    $eventId: ID
+    $id: ID
     $filter: ModelEventFilterInput
     $limit: Int
     $nextToken: String
     $sortDirection: ModelSortDirection
   ) {
     listEvents(
-      eventId: $eventId
+      id: $id
       filter: $filter
       limit: $limit
       nextToken: $nextToken
       sortDirection: $sortDirection
     ) {
       items {
-        eventId
+        id
         userId
         name
         eventImageId
@@ -229,13 +319,17 @@ export const listEvents = /* GraphQL */ `
         to
         reported
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         comment {
           nextToken
+          startedAt
         }
         image {
-          eventImageId
+          id
           name
           type
           size
@@ -243,11 +337,15 @@ export const listEvents = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       nextToken
+      startedAt
     }
   }
 `;
@@ -267,7 +365,7 @@ export const listEventByOwner = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        eventId
+        id
         userId
         name
         eventImageId
@@ -283,13 +381,17 @@ export const listEventByOwner = /* GraphQL */ `
         to
         reported
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         comment {
           nextToken
+          startedAt
         }
         image {
-          eventImageId
+          id
           name
           type
           size
@@ -297,21 +399,85 @@ export const listEventByOwner = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncEvents = /* GraphQL */ `
+  query SyncEvents(
+    $filter: ModelEventFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncEvents(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        userId
+        name
+        eventImageId
+        introduction
+        tag
+        lat
+        lng
+        limit
+        reserved
+        start
+        end
+        from
+        to
+        reported
+        owner
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        comment {
+          nextToken
+          startedAt
+        }
+        image {
+          id
+          name
+          type
+          size
+          alt
+          url
+          identityId
+          owner
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
     }
   }
 `;
 export const getComment = /* GraphQL */ `
-  query GetComment($commentId: ID!) {
-    getComment(commentId: $commentId) {
-      commentId
+  query GetComment($id: ID!) {
+    getComment(id: $id) {
+      id
       eventId
       author {
-        userId
+        id
         name
         introduction
         lat
@@ -321,13 +487,17 @@ export const getComment = /* GraphQL */ `
         userImageId
         status
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         event {
           nextToken
+          startedAt
         }
         icon {
-          userImageId
+          id
           name
           type
           size
@@ -335,12 +505,18 @@ export const getComment = /* GraphQL */ `
           url
           identityId
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
       }
       value
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -348,24 +524,24 @@ export const getComment = /* GraphQL */ `
 `;
 export const listComments = /* GraphQL */ `
   query ListComments(
-    $commentId: ID
+    $id: ID
     $filter: ModelCommentFilterInput
     $limit: Int
     $nextToken: String
     $sortDirection: ModelSortDirection
   ) {
     listComments(
-      commentId: $commentId
+      id: $id
       filter: $filter
       limit: $limit
       nextToken: $nextToken
       sortDirection: $sortDirection
     ) {
       items {
-        commentId
+        id
         eventId
         author {
-          userId
+          id
           name
           introduction
           lat
@@ -375,15 +551,22 @@ export const listComments = /* GraphQL */ `
           userImageId
           status
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         value
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
     }
   }
 `;
@@ -403,10 +586,10 @@ export const lisByOwner = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        commentId
+        id
         eventId
         author {
-          userId
+          id
           name
           introduction
           lat
@@ -416,22 +599,75 @@ export const lisByOwner = /* GraphQL */ `
           userImageId
           status
           owner
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         value
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncComments = /* GraphQL */ `
+  query SyncComments(
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncComments(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        eventId
+        author {
+          id
+          name
+          introduction
+          lat
+          lng
+          tag
+          acquaintance
+          userImageId
+          status
+          owner
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        value
+        owner
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;
 export const getUserImage = /* GraphQL */ `
-  query GetUserImage($userImageId: ID!) {
-    getUserImage(userImageId: $userImageId) {
-      userImageId
+  query GetUserImage($id: ID!) {
+    getUserImage(id: $id) {
+      id
       name
       type
       size
@@ -439,6 +675,9 @@ export const getUserImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -446,21 +685,21 @@ export const getUserImage = /* GraphQL */ `
 `;
 export const listUserImages = /* GraphQL */ `
   query ListUserImages(
-    $userImageId: ID
+    $id: ID
     $filter: ModelUserImageFilterInput
     $limit: Int
     $nextToken: String
     $sortDirection: ModelSortDirection
   ) {
     listUserImages(
-      userImageId: $userImageId
+      id: $id
       filter: $filter
       limit: $limit
       nextToken: $nextToken
       sortDirection: $sortDirection
     ) {
       items {
-        userImageId
+        id
         name
         type
         size
@@ -468,10 +707,14 @@ export const listUserImages = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
     }
   }
 `;
@@ -491,7 +734,7 @@ export const listUserImageByOwner = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        userImageId
+        id
         name
         type
         size
@@ -499,17 +742,54 @@ export const listUserImageByOwner = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncUserImages = /* GraphQL */ `
+  query SyncUserImages(
+    $filter: ModelUserImageFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUserImages(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        type
+        size
+        alt
+        url
+        identityId
+        owner
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;
 export const getEventImage = /* GraphQL */ `
-  query GetEventImage($eventImageId: ID!) {
-    getEventImage(eventImageId: $eventImageId) {
-      eventImageId
+  query GetEventImage($id: ID!) {
+    getEventImage(id: $id) {
+      id
       name
       type
       size
@@ -517,6 +797,9 @@ export const getEventImage = /* GraphQL */ `
       url
       identityId
       owner
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -524,21 +807,21 @@ export const getEventImage = /* GraphQL */ `
 `;
 export const listEventImages = /* GraphQL */ `
   query ListEventImages(
-    $eventImageId: ID
+    $id: ID
     $filter: ModelEventImageFilterInput
     $limit: Int
     $nextToken: String
     $sortDirection: ModelSortDirection
   ) {
     listEventImages(
-      eventImageId: $eventImageId
+      id: $id
       filter: $filter
       limit: $limit
       nextToken: $nextToken
       sortDirection: $sortDirection
     ) {
       items {
-        eventImageId
+        id
         name
         type
         size
@@ -546,10 +829,14 @@ export const listEventImages = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
     }
   }
 `;
@@ -569,7 +856,7 @@ export const listEventImageByOwner = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        eventImageId
+        id
         name
         type
         size
@@ -577,10 +864,47 @@ export const listEventImageByOwner = /* GraphQL */ `
         url
         identityId
         owner
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncEventImages = /* GraphQL */ `
+  query SyncEventImages(
+    $filter: ModelEventImageFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncEventImages(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        type
+        size
+        alt
+        url
+        identityId
+        owner
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;

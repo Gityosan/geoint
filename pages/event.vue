@@ -434,6 +434,7 @@
     async created() {
       this.eventLimitList = [...Array(30)].map((_, i) => i + 1)
       await API.graphql({
+        authMode: 'AWS_IAM',
         query: listEvents
       })
         .then(async (res) => {
@@ -456,7 +457,8 @@
           for (let i = 0; i < this.events.length; i++) {
             await API.graphql({
               query: getUser,
-              variables: { userId: this.events[i].userId }
+              authMode: 'AWS_IAM',
+              variables: { id: this.events[i].userId }
             }).then((res) => {
               const filePath =
                 res.data.getUser.icon.url + res.data.getUser.icon.name
@@ -498,6 +500,7 @@
         this.btnDisable = await true
         await API.graphql({
           query: createEventImage,
+          authMode: 'AWS_IAM',
           variables: {
             input: {
               alt: this.event.name,
@@ -513,6 +516,7 @@
           .then(async (res) => {
             await API.graphql({
               query: createEvent,
+              authMode: 'AWS_IAM',
               variables: {
                 input: {
                   name: this.event.name,
@@ -555,8 +559,8 @@
       },
       // GoogleMapのマーカーがドラッグで移動された時の座標更新
       updateMarker(location) {
-        this.googleMap.markerLng = location.latLng.lng()
-        this.googleMap.markerLat = location.latLng.lat()
+        this.event.lng = location.latLng.lng()
+        this.event.lat = location.latLng.lat()
       }
     }
     // async mounted(){
@@ -579,8 +583,3 @@
     // }
   }
 </script>
-<style lang="scss" scoped>
-  .base {
-    min-height: 20vh;
-  }
-</style>

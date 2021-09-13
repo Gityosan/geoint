@@ -1,12 +1,12 @@
 
-type User @model @key(fields:["userId"])
+type User @model @key(fields:["id"])
 @key(name: "ByOwner", fields: ["owner"], queryField: "listUserByOwner")
 @auth(rules:[
   {allow: public, provider: iam, operations: [ read ]},
   {allow: owner, ownerField: "owner", operations: [read, create, update, delete] },
   {allow: groups, groups: ["Master"], operations: [read, create, update, delete]}
 ]){
- userId: ID!
+ id: ID!
  name: String
  introduction: String
  lat: Float
@@ -16,12 +16,12 @@ type User @model @key(fields:["userId"])
  userImageId: ID!
  icon: UserImage @connection(fields:["userImageId"])
  status: UserStatus!
- event: [Event] @connection(keyName: "EventByUser", fields: ["userId"])
+ event: [Event] @connection(keyName: "EventByUser", fields: ["id"])
  owner: ID!
 }
 
 
-type Event @model @key(fields:["eventId"])
+type Event @model @key(fields:["id"])
 @key(name: "EventByUser", fields: ["userId"])
 @key(name: "ByOwner", fields: ["owner"], queryField: "listEventByOwner")
 @auth(rules:[
@@ -29,14 +29,13 @@ type Event @model @key(fields:["eventId"])
   {allow: owner, ownerField: "owner", operations: [read, create, update, delete] },
   {allow: groups, groups: ["Master"], operations: [read, create, update, delete]}
 ]){
- eventId: ID!
+ id: ID!
  userId: ID!
  name: String
  eventImageId: ID!
  image: EventImage @connection(fields:["eventImageId"])
  introduction: String
  tag: [String]
-#  pin: PinType
  lat: Float
  lng: Float
  limit: Int
@@ -45,7 +44,7 @@ type Event @model @key(fields:["eventId"])
  end: AWSDateTime
  from: AWSDateTime
  to: AWSDateTime
- comment: [Comment] @connection(keyName: "CommentByEvent", fields: ["eventId"])
+ comment: [Comment] @connection(keyName: "CommentByEvent", fields: ["id"])
  reported: Boolean
  owner: ID!
 }
@@ -56,7 +55,7 @@ enum UserStatus {
  reject
 }
 
-type Comment @model @key(fields:["commentId"])
+type Comment @model @key(fields:["id"])
 @key(name: "CommentByEvent", fields: ["eventId"])
 @key(name: "ByOwner", fields: ["owner"], queryField: "lisByOwner")
 @auth(rules:[
@@ -64,27 +63,20 @@ type Comment @model @key(fields:["commentId"])
   {allow: owner, ownerField: "owner", operations: [read, create, update, delete] },
   {allow: groups, groups: ["Master"], operations: [read, create, update, delete]}
 ]){
- commentId: ID!
+ id: ID!
  eventId: ID!
  author: User!
  value: String
  owner: ID!
 }
-
-# enum PinType {
-#   play
-#   meet
-#   study
-#   voicechat
-# }
-type UserImage @model @key(fields:["userImageId"])
+type UserImage @model @key(fields:["id"])
 @key(name: "ByOwner", fields: ["owner"], queryField: "listUserImageByOwner")
 @auth(rules:[
   {allow: public, provider: iam, operations: [ read ]},
   {allow: owner, ownerField: "owner", operations: [read, create, update, delete] },
   {allow: groups, groups: ["Master"], operations: [read, create, update, delete]}
 ]){
- userImageId: ID!
+ id: ID!
  name: String
  type: String
  size: Int
@@ -93,14 +85,14 @@ type UserImage @model @key(fields:["userImageId"])
  identityId: String!
  owner: ID!
 }
-type EventImage @model @key(fields:["eventImageId"])
+type EventImage @model @key(fields:["id"])
 @key(name: "ByOwner", fields: ["owner"], queryField: "listEventImageByOwner")
 @auth(rules:[
   {allow: public, provider: iam, operations: [ read ]},
   {allow: owner, ownerField: "owner", operations: [read, create, update, delete] },
   {allow: groups, groups: ["Master"], operations: [read, create, update, delete]}
 ]){
- eventImageId: ID!
+ id: ID!
  name: String
  type: String
  size: Int

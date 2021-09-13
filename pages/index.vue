@@ -13,11 +13,31 @@
           :options="mapOptions"
         >
           <GmapMarker
+            v-for="item in events"
+            :key="item.id"
+            :position="{
+              lat: item.lat,
+              lng: item.lng
+            }"
+            :title="item.name"
+            :draggable="true"
+            :clickable="true"
+          />
+          <!-- <GmapMarker
+            :position="{
+              lat: userInfo.lat,
+              lng: userInfo.lng
+            }"
+            :title="userInfo.name"
+            :draggable="true"
+            :clickable="true"
+          /> -->
+          <GmapMarker
             :position="{
               lat: location.lat,
               lng: location.lng
             }"
-            :title="name"
+            :title="location.name"
             :draggable="true"
             :clickable="true"
           />
@@ -61,15 +81,29 @@
           // },
           styles: []
         },
-        events: []
+        events: [],
+        userInfo: {}
       }
+    },
+    async created() {
+      await API.graphql({
+        authMode: 'AWS_IAM',
+        query: listEvents
+      })
+        .then(async (res) => {
+          this.events = await res.data.listEvents.items
+        })
+        .catch((e) => console.log(e))
+
+      await API.graphql({
+        query: getUser,
+        authMode: 'AWS_IAM',
+        variables: { id: this.$store.state.userId }
+      })
+        .then((res) => {
+          this.userInfo = res.data.getUser
+        })
+        .catch((e) => console.log('getUser', e))
     }
-    // async created() {
-    //   await API.graphql({
-    //     query: listEvents
-    //   }).then(async (res) => {
-    //     this.events = await res.data.listEvents.items
-    //   })
-    // }
   }
 </script>

@@ -1,6 +1,22 @@
 {
   "auth": {
-    "samplegeoint450c0480450c0480": {
+    "userPoolGroups": {
+      "service": "Cognito-UserPool-Groups",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "geoint6641cb456641cb45",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
+        }
+      ]
+    },
+    "geoint6641cb456641cb45": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -8,7 +24,7 @@
     }
   },
   "api": {
-    "samplegeoint": {
+    "geoint": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -16,7 +32,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authsamplegeoint450c0480450c0480"
+              "userPoolId": "authgeoint6641cb456641cb45"
             }
           },
           "additionalAuthenticationProviders": [

@@ -32,12 +32,14 @@
     async created() {
       await API.graphql({
         query: getUser,
-        variables: { userId: this.$store.state.userId }
+        authMode: 'AWS_IAM',
+        variables: { id: this.$store.state.userId }
       })
         .then((res) => {
           res.data.getUser.acquaintance.map(async (item) => {
             await API.graphql({
               query: listUsers,
+              authMode: 'AWS_IAM',
               variables: {
                 input: {
                   or: this.makeUserIdFilter(item)
@@ -53,7 +55,7 @@
     methods: {
       makeUserIdFilter(v) {
         return v.map((i) => {
-          return { userId: { eq: i } }
+          return { id: { eq: i } }
         })
       },
       async getImage(item) {

@@ -7,10 +7,11 @@
     <v-row v-else align="center" justify="center">
       <v-row>
         <v-col cols="4">
-          <img :src="userIcon" :alt="userInfo.icon ? userInfo.icon.alt : ''" />
+          <img :src="userIcon" alt="アイコン" />
         </v-col>
         <v-col cols="8">
-          <p>{{ userInfo.name }}</p>
+          <!-- <p>{{ userInfo.name || 'サンプルネーム' }}</p> -->
+          <p>サンプルネーム</p>
           <p>
             知り合った人数：{{
               userInfo.acquaintance ? userInfo.acquaintance.length : 0
@@ -28,17 +29,19 @@
   export default {
     data() {
       return {
-        userInfo: {},
+        userInfo: {
+          name: 'サンプル'
+        },
         userIcon: ''
       }
     },
     async created() {
       await API.graphql({
         query: getUser,
-        variables: { userId: this.$store.state.userId }
+        variables: { id: this.$store.state.userId }
       })
         .then(async (res) => {
-          this.userInfo = await res.data.getUser
+          this.userInfo = res.data.getUser
           await Storage.get(
             res.data.getUser.icon.url + res.data.getUser.icon.name,
             {

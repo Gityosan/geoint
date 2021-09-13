@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "samplegeoint450c0480_identitypool_450c0480",
+    "identityPoolName": "geoint6641cb45_identitypool_6641cb45",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "sample450c0480",
-    "userPoolName": "samplegeoint450c0480_userpool_450c0480",
+    "resourceNameTruncated": "geoint6641cb45",
+    "userPoolName": "geoint6641cb45_userpool_6641cb45",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "sample450c0480_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "geoint6641cb45_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "450c0480",
-    "resourceName": "samplegeoint450c0480450c0480",
+    "sharedId": "6641cb45",
+    "resourceName": "geoint6641cb456641cb45",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -50,11 +50,13 @@
     "usernameAttributes": [
         "email"
     ],
-    "userPoolGroups": false,
+    "userPoolGroups": true,
     "adminQueries": false,
     "triggers": "{}",
     "hostedUI": false,
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+        "Master"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "parentStack": {
