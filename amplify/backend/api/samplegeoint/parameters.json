@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "samplegeoint",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authsamplegeoint450c0480450c0480",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

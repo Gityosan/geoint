@@ -16,6 +16,20 @@
     >
       <v-icon>mdi-minus-box-outline</v-icon>
     </v-btn>
+    <v-btn
+      icon
+      v-if="$route.name === 'setting' && !$store.getters.editProfile"
+      @click="$store.commit('setEditProfile', !$store.getters.editProfile)"
+    >
+      <v-icon>mdi-plus-box-outline</v-icon>
+    </v-btn>
+    <v-btn
+      icon
+      v-if="$route.name === 'setting' && $store.getters.editProfile"
+      @click="$store.commit('setEditProfile', !$store.getters.editProfile)"
+    >
+      <v-icon>mdi-minus-box-outline</v-icon>
+    </v-btn>
 
     <v-btn
       v-if="$store.getters.isSignedIn"

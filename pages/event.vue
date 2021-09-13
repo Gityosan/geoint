@@ -1,7 +1,7 @@
 <template>
   <v-card flat>
     <v-row v-if="$store.getters.editEvent" align="center" justify="center">
-      <v-card-title class="my-2">イベント登録</v-card-title>
+      <v-card-title class="my-2 mx-10">イベント登録</v-card-title>
       <v-text-field
         class="ma-3"
         v-model.trim="event.name"
@@ -22,6 +22,15 @@
         rounded
         :rules="[required, max20]"
       ></v-text-field>
+      <v-select
+        :items="eventLimitList"
+        label="募集人数"
+        class="ma-3"
+        required
+        v-model="event.limit"
+        outlined
+        rounded
+      ></v-select>
       <v-textarea
         class="ma-3"
         v-model.trim="event.discription"
@@ -36,69 +45,312 @@
         <v-card-title>イベントの開催場所にピンを置こう！</v-card-title>
       </v-card>
       <GmapMap
+        ref="gmap"
         map-type-id="roadmap"
         :center="{
-          lng: location.lng,
-          lat: location.lat
+          lng: event.lng,
+          lat: event.lat
         }"
-        :zoom="location.zoom"
+        :zoom="event.zoom"
         :style="styleMap"
         :options="mapOptions"
       >
         <GmapMarker
           :position="{
-            lat: location.lat,
-            lng: location.lng
+            lat: event.lat,
+            lng: event.lng
           }"
           :title="event.place"
           :draggable="true"
           :clickable="true"
+          @dragend="updateMarker"
         />
       </GmapMap>
-      <v-card-subtitle>メイン写真</v-card-subtitle>
-      <template v-if="topImage.uploadImageUrl">
-        <img :src="topImage.uploadImageUrl" width="100%" />
+
+      <v-card-subtitle class="mx-10">開始時刻は？</v-card-subtitle>
+      <v-menu
+        ref="menu"
+        v-model="eventStart.date"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        :nudge-right="40"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="eventStart.dateValue"
+            label="日付を選択"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+            outlined
+            rounded
+            class="mx-10"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="eventStart.dateValue"
+          no-title
+          @input="eventStart.date = false"
+          scrollable
+        >
+        </v-date-picker>
+      </v-menu>
+      <v-menu
+        ref="menu"
+        v-model="eventStart.time"
+        :close-on-content-click="false"
+        :return-value.sync="eventStart.time"
+        transition="scale-transition"
+        offset-y
+        :nudge-right="40"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="eventStart.timeValue"
+            label="時刻を選択"
+            prepend-icon="mdi-clock-time-four-outline"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+            outlined
+            rounded
+            class="mx-10"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          v-model="eventStart.timeValue"
+          no-title
+          @input="eventStart.time = false"
+          scrollable
+        >
+        </v-time-picker>
+      </v-menu>
+
+      <v-card-subtitle class="mx-10">終了時刻は？</v-card-subtitle>
+      <v-menu
+        ref="menu"
+        v-model="eventEnd.date"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        :nudge-right="40"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="eventEnd.dateValue"
+            label="日付を選択"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+            outlined
+            rounded
+            class="mx-10"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="eventEnd.dateValue"
+          no-title
+          @input="eventEnd.date = false"
+          scrollable
+        >
+        </v-date-picker>
+      </v-menu>
+      <v-menu
+        ref="menu"
+        v-model="eventEnd.time"
+        :close-on-content-click="false"
+        :return-value.sync="eventEnd.time"
+        transition="scale-transition"
+        offset-y
+        :nudge-right="40"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="eventEnd.timeValue"
+            label="時刻を選択"
+            prepend-icon="mdi-clock-time-four-outline"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+            outlined
+            rounded
+            class="mx-10"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          v-model="eventEnd.timeValue"
+          no-title
+          @input="eventEnd.time = false"
+          scrollable
+        >
+        </v-time-picker>
+      </v-menu>
+
+      <v-card-subtitle class="mx-10">いつから載せる？</v-card-subtitle>
+      <v-menu
+        ref="menu"
+        v-model="eventFrom.date"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        :nudge-right="40"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="eventFrom.dateValue"
+            label="日付を選択"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+            outlined
+            rounded
+            class="mx-10"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="eventFrom.dateValue"
+          no-title
+          @input="eventFrom.date = false"
+          scrollable
+        >
+        </v-date-picker>
+      </v-menu>
+      <v-menu
+        ref="menu"
+        v-model="eventFrom.time"
+        :close-on-content-click="false"
+        :return-value.sync="eventFrom.time"
+        transition="scale-transition"
+        offset-y
+        :nudge-right="40"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="eventFrom.timeValue"
+            label="時刻を選択"
+            prepend-icon="mdi-clock-time-four-outline"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+            outlined
+            rounded
+            class="mx-10"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          v-model="eventFrom.timeValue"
+          no-title
+          @input="eventFrom.time = false"
+          scrollable
+        >
+        </v-time-picker>
+      </v-menu>
+
+      <v-card-subtitle class="mx-10">いつまで載せる？</v-card-subtitle>
+      <v-menu
+        ref="menu"
+        v-model="eventTo.date"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        :nudge-right="40"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="eventTo.dateValue"
+            label="日付を選択"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+            outlined
+            rounded
+            class="mx-10"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="eventTo.dateValue"
+          no-title
+          @input="eventTo.date = false"
+          scrollable
+        >
+        </v-date-picker>
+      </v-menu>
+      <v-menu
+        ref="menu"
+        v-model="eventTo.time"
+        :close-on-content-click="false"
+        :return-value.sync="eventTo.time"
+        transition="scale-transition"
+        offset-y
+        :nudge-right="40"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="eventTo.timeValue"
+            label="時刻を選択"
+            prepend-icon="mdi-clock-time-four-outline"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+            outlined
+            rounded
+            class="mx-10"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          v-model="eventTo.timeValue"
+          no-title
+          @input="eventTo.time = false"
+          scrollable
+        >
+        </v-time-picker>
+      </v-menu>
+      {{ eventTo.dateValue }}
+      {{ eventTo.timeValue }}
+      {{ eventTo.dateValue + eventTo.timeValue }}
+
+      <v-card-subtitle class="mx-10">サムネイル</v-card-subtitle>
+      <template v-if="eventImage.uploadImageUrl">
+        <v-img
+          :src="eventImage.uploadImageUrl"
+          width="80%"
+          class="my-5 mx-10"
+        />
       </template>
       <template v-else>
-        <img src="@/static/img/no_image.png" width="100%" />
+        <v-img src="/img/no_image.png" width="80%" class="mx-10 my-5" />
       </template>
-      <v-file-input
-        v-model="topImage.inputImage"
-        accept="image/*"
-        show-size
-        :label="topImage.fullName || '画像をアップロード'"
-        prepend-icon="mdi-image"
-        @change="onTopImagePicked"
-        @click="topImage.isUpdated = true"
-        outlined
-        :rules="[required, fileMax5M]"
-      ></v-file-input>
-      <v-text-field
-        class="ma-3"
-        v-model.trim="event.name"
-        label="イベントの名前"
-        placeholder="みんなで遊びましょう！"
-        required
-        outlined
+      <v-col cols="11">
+        <v-file-input
+          v-model="eventImage.inputImage"
+          accept="image/*"
+          show-size
+          :label="eventImage.name || '画像をアップロード'"
+          prepend-icon="mdi-image"
+          @change="onImagePicked"
+          outlined
+          :rules="[required, fileMax5M]"
+          full-width
+        ></v-file-input>
+      </v-col>
+      <v-btn
+        color="primary"
+        width="40vw"
         rounded
-        :rules="[required, max20]"
-      ></v-text-field>
-      <v-btn color="primary" width="40vw" rounded class="mt-5 mr-3 ml-3">
+        @click="createEvent"
+        :disabled="btnDisable"
+      >
         登録
       </v-btn>
-      <v-text-field
-        class="ma-3"
-        v-model.trim="event.name"
-        label="イベントの名前"
-        placeholder="みんなで遊びましょう！"
-        required
-        outlined
-        rounded
-        :rules="[required, max20]"
-      ></v-text-field>
+      <v-card flat height="30vh"></v-card>
     </v-row>
 
-    <v-row v-else justify="center">
+    <v-row v-else align="center" justify="center">
       <v-card-title class="my-2">イベント一覧</v-card-title>
       <v-card v-for="(item, index) in events" :key="item.id" outlined>
         <v-col cols="5">
@@ -124,20 +376,25 @@
 <script>
   import { API, Storage } from 'aws-amplify'
   import { listEvents, getUser } from '@@/src/graphql/queries'
+  import { createEvent, createEventImage } from '@@/src/graphql/mutations'
   export default {
     data() {
       return {
         events: null,
         eventImageList: [],
         eventAuthorList: [],
+        eventLimitList: [],
+        eventStart: { date: false, time: false, dateValue: '', timeValue: '' },
+        eventEnd: { date: false, time: false, dateValue: '', timeValue: '' },
+        eventFrom: { date: false, time: false, dateValue: '', timeValue: '' },
+        eventTo: { date: false, time: false, dateValue: '', timeValue: '' },
         event: {
           name: '',
           place: '',
           introduction: '',
-          tag: [],
-          pin: '',
-          lat: 0,
-          lng: 0,
+          lat: 35.658035811437166,
+          lng: 139.70166202877502,
+          zoom: 16,
           limit: 0,
           reserved: 0,
           start: null,
@@ -146,21 +403,23 @@
           to: null,
           reported: false
         },
-        pinType: ['play', 'meet', 'study', 'voicechat'],
+        eventImage: {
+          name: '',
+          type: '',
+          size: '',
+          alt: '',
+          url: '',
+          identityId: '',
+          inputImage: null,
+          uploadImageUrl: ''
+        },
+        btnDisable: false,
         required: (v) => !!v || '必須項目です',
         max20: (v) => (v && v.length <= 20) || '最大で20文字までです',
-        max11: (v) => (v && v.length <= 11) || '最大で11文字までです',
-        min8: (v) => (v && v.length < 8) || '８文字以上必要です',
-        min10: (v) => (v && v.length >= 10) || '10文字以上必要です',
         fileMax5M: (v) =>
           !v ||
           v.size < 5000000 ||
           'アップロード可能なファイルサイズは５MBまでです',
-        location: {
-          lat: 35.658035811437166,
-          lng: 139.70166202877502,
-          zoom: 16
-        },
         styleMap: {
           width: '90vw',
           height: '40vh'
@@ -173,6 +432,7 @@
       }
     },
     async created() {
+      this.eventLimitList = [...Array(30)].map((_, i) => i + 1)
       await API.graphql({
         query: listEvents
       })
@@ -214,7 +474,109 @@
     destroyed() {
       this.$store.commit('setEditEvent', false)
     },
-    methods: {}
+    methods: {
+      onImagePicked(file) {
+        if (file !== undefined && file !== null) {
+          if (file.name.lastIndexOf('.') <= 0) {
+            return
+          }
+          const fr = new FileReader()
+          fr.readAsDataURL(file)
+          fr.addEventListener('load', () => {
+            this.eventImage.uploadImageUrl = fr.result
+            this.eventImage.size = file.size
+            this.eventImage.type = file.type
+            this.eventImage.name = file.name
+            // inputImageに自動でファイルオブジェクトが入る
+          })
+        } else {
+          this.eventImage.inputImage = null
+          this.eventImage.uploadImageUrl = ''
+        }
+      },
+      async createEvent() {
+        this.btnDisable = await true
+        await API.graphql({
+          query: createEventImage,
+          variables: {
+            input: {
+              alt: this.event.name,
+              name: this.eventImage.name,
+              size: this.eventImage.size,
+              type: this.eventImage.type,
+              url: '/event/',
+              identityId: this.$store.state.identityId,
+              owner: this.$store.state.owner
+            }
+          }
+        })
+          .then(async (res) => {
+            await API.graphql({
+              query: createEvent,
+              variables: {
+                input: {
+                  name: this.event.name,
+                  introduction: this.event.introduction,
+                  limit: this.event.limit,
+                  reserved: 0,
+                  lat: this.event.lat,
+                  lng: this.event.lng,
+                  start:
+                    this.eventStart.dateValue +
+                    'T' +
+                    this.eventStart.timeValue +
+                    'Z',
+                  end:
+                    this.eventEnd.dateValue +
+                    'T' +
+                    this.eventEnd.timeValue +
+                    'Z',
+                  from:
+                    this.eventFrom.dateValue +
+                    'T' +
+                    this.eventFrom.timeValue +
+                    'Z',
+                  to:
+                    this.eventTo.dateValue + 'T' + this.eventTo.timeValue + 'Z',
+                  userId: this.$store.state.userId,
+                  owner: this.$store.state.owner,
+                  eventImageId: res.data.createEventImage.eventImageId,
+                  reported: false
+                }
+              }
+            })
+              .then(() => {
+                this.btnDisable = false
+                this.$store.commit('setEditEvent', false)
+              })
+              .catch((e) => console.log('createEvent', e))
+          })
+          .catch((e) => console.log('createEventImage', e))
+      },
+      // GoogleMapのマーカーがドラッグで移動された時の座標更新
+      updateMarker(location) {
+        this.googleMap.markerLng = location.latLng.lng()
+        this.googleMap.markerLat = location.latLng.lat()
+      }
+    }
+    // async mounted(){
+    //   let that = this
+    //   if (this.$refs.gmap !== undefined) {
+    //     this.$refs.gmap.$mapPromise
+    //       .then((map) => {
+    //         google.maps.event.addListener(
+    //           this.$refs.gmap.$mapObject,
+    //           'zoom_changed',
+    //           function () {
+    //             that.event.zoom = map.zoom
+    //           }
+    //         )
+    //       })
+    //       .catch((error) => {
+    //         console.log(error)
+    //       })
+    //   }
+    // }
   }
 </script>
 <style lang="scss" scoped>

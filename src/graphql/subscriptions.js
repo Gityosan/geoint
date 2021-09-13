@@ -10,45 +10,20 @@ export const onCreateUser = /* GraphQL */ `
       lat
       lng
       tag
-      acquaintance {
-        userId
-        name
-        introduction
-        lat
-        lng
-        tag
-        acquaintance {
-          userId
-          name
-          introduction
-          lat
-          lng
-          tag
-          status
-          owner
-          createdAt
-          updatedAt
-        }
-        icon {
-          userImageId
-          name
-          type
-          size
-          alt
-          url
-          identityId
-          owner
-          createdAt
-          updatedAt
-        }
-        status
-        event {
+      acquaintance
+      userImageId
+      status
+      owner
+      createdAt
+      updatedAt
+      event {
+        items {
           eventId
           userId
           name
+          eventImageId
           introduction
           tag
-          pin
           lat
           lng
           limit
@@ -62,9 +37,7 @@ export const onCreateUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        owner
-        createdAt
-        updatedAt
+        nextToken
       }
       icon {
         userImageId
@@ -78,45 +51,6 @@ export const onCreateUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      status
-      event {
-        eventId
-        userId
-        name
-        image {
-          eventImageId
-          name
-          type
-          size
-          alt
-          url
-          identityId
-          owner
-          createdAt
-          updatedAt
-        }
-        introduction
-        tag
-        pin
-        lat
-        lng
-        limit
-        reserved
-        start
-        end
-        from
-        to
-        reported
-        owner
-        createdAt
-        updatedAt
-        comment {
-          nextToken
-        }
-      }
-      owner
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -129,45 +63,20 @@ export const onUpdateUser = /* GraphQL */ `
       lat
       lng
       tag
-      acquaintance {
-        userId
-        name
-        introduction
-        lat
-        lng
-        tag
-        acquaintance {
-          userId
-          name
-          introduction
-          lat
-          lng
-          tag
-          status
-          owner
-          createdAt
-          updatedAt
-        }
-        icon {
-          userImageId
-          name
-          type
-          size
-          alt
-          url
-          identityId
-          owner
-          createdAt
-          updatedAt
-        }
-        status
-        event {
+      acquaintance
+      userImageId
+      status
+      owner
+      createdAt
+      updatedAt
+      event {
+        items {
           eventId
           userId
           name
+          eventImageId
           introduction
           tag
-          pin
           lat
           lng
           limit
@@ -181,9 +90,7 @@ export const onUpdateUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        owner
-        createdAt
-        updatedAt
+        nextToken
       }
       icon {
         userImageId
@@ -197,45 +104,6 @@ export const onUpdateUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      status
-      event {
-        eventId
-        userId
-        name
-        image {
-          eventImageId
-          name
-          type
-          size
-          alt
-          url
-          identityId
-          owner
-          createdAt
-          updatedAt
-        }
-        introduction
-        tag
-        pin
-        lat
-        lng
-        limit
-        reserved
-        start
-        end
-        from
-        to
-        reported
-        owner
-        createdAt
-        updatedAt
-        comment {
-          nextToken
-        }
-      }
-      owner
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -248,45 +116,20 @@ export const onDeleteUser = /* GraphQL */ `
       lat
       lng
       tag
-      acquaintance {
-        userId
-        name
-        introduction
-        lat
-        lng
-        tag
-        acquaintance {
-          userId
-          name
-          introduction
-          lat
-          lng
-          tag
-          status
-          owner
-          createdAt
-          updatedAt
-        }
-        icon {
-          userImageId
-          name
-          type
-          size
-          alt
-          url
-          identityId
-          owner
-          createdAt
-          updatedAt
-        }
-        status
-        event {
+      acquaintance
+      userImageId
+      status
+      owner
+      createdAt
+      updatedAt
+      event {
+        items {
           eventId
           userId
           name
+          eventImageId
           introduction
           tag
-          pin
           lat
           lng
           limit
@@ -300,9 +143,7 @@ export const onDeleteUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        owner
-        createdAt
-        updatedAt
+        nextToken
       }
       icon {
         userImageId
@@ -316,45 +157,6 @@ export const onDeleteUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      status
-      event {
-        eventId
-        userId
-        name
-        image {
-          eventImageId
-          name
-          type
-          size
-          alt
-          url
-          identityId
-          owner
-          createdAt
-          updatedAt
-        }
-        introduction
-        tag
-        pin
-        lat
-        lng
-        limit
-        reserved
-        start
-        end
-        from
-        to
-        reported
-        owner
-        createdAt
-        updatedAt
-        comment {
-          nextToken
-        }
-      }
-      owner
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -364,21 +166,9 @@ export const onCreateEvent = /* GraphQL */ `
       eventId
       userId
       name
-      image {
-        eventImageId
-        name
-        type
-        size
-        alt
-        url
-        identityId
-        owner
-        createdAt
-        updatedAt
-      }
+      eventImageId
       introduction
       tag
-      pin
       lat
       lng
       limit
@@ -401,6 +191,18 @@ export const onCreateEvent = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      image {
+        eventImageId
+        name
+        type
+        size
+        alt
+        url
+        identityId
+        owner
+        createdAt
+        updatedAt
       }
     }
   }
@@ -411,21 +213,9 @@ export const onUpdateEvent = /* GraphQL */ `
       eventId
       userId
       name
-      image {
-        eventImageId
-        name
-        type
-        size
-        alt
-        url
-        identityId
-        owner
-        createdAt
-        updatedAt
-      }
+      eventImageId
       introduction
       tag
-      pin
       lat
       lng
       limit
@@ -448,6 +238,18 @@ export const onUpdateEvent = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      image {
+        eventImageId
+        name
+        type
+        size
+        alt
+        url
+        identityId
+        owner
+        createdAt
+        updatedAt
       }
     }
   }
@@ -458,21 +260,9 @@ export const onDeleteEvent = /* GraphQL */ `
       eventId
       userId
       name
-      image {
-        eventImageId
-        name
-        type
-        size
-        alt
-        url
-        identityId
-        owner
-        createdAt
-        updatedAt
-      }
+      eventImageId
       introduction
       tag
-      pin
       lat
       lng
       limit
@@ -495,6 +285,18 @@ export const onDeleteEvent = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      image {
+        eventImageId
+        name
+        type
+        size
+        alt
+        url
+        identityId
+        owner
+        createdAt
+        updatedAt
       }
     }
   }
@@ -511,17 +313,14 @@ export const onCreateComment = /* GraphQL */ `
         lat
         lng
         tag
-        acquaintance {
-          userId
-          name
-          introduction
-          lat
-          lng
-          tag
-          status
-          owner
-          createdAt
-          updatedAt
+        acquaintance
+        userImageId
+        status
+        owner
+        createdAt
+        updatedAt
+        event {
+          nextToken
         }
         icon {
           userImageId
@@ -535,30 +334,6 @@ export const onCreateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        status
-        event {
-          eventId
-          userId
-          name
-          introduction
-          tag
-          pin
-          lat
-          lng
-          limit
-          reserved
-          start
-          end
-          from
-          to
-          reported
-          owner
-          createdAt
-          updatedAt
-        }
-        owner
-        createdAt
-        updatedAt
       }
       value
       owner
@@ -579,17 +354,14 @@ export const onUpdateComment = /* GraphQL */ `
         lat
         lng
         tag
-        acquaintance {
-          userId
-          name
-          introduction
-          lat
-          lng
-          tag
-          status
-          owner
-          createdAt
-          updatedAt
+        acquaintance
+        userImageId
+        status
+        owner
+        createdAt
+        updatedAt
+        event {
+          nextToken
         }
         icon {
           userImageId
@@ -603,30 +375,6 @@ export const onUpdateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        status
-        event {
-          eventId
-          userId
-          name
-          introduction
-          tag
-          pin
-          lat
-          lng
-          limit
-          reserved
-          start
-          end
-          from
-          to
-          reported
-          owner
-          createdAt
-          updatedAt
-        }
-        owner
-        createdAt
-        updatedAt
       }
       value
       owner
@@ -647,17 +395,14 @@ export const onDeleteComment = /* GraphQL */ `
         lat
         lng
         tag
-        acquaintance {
-          userId
-          name
-          introduction
-          lat
-          lng
-          tag
-          status
-          owner
-          createdAt
-          updatedAt
+        acquaintance
+        userImageId
+        status
+        owner
+        createdAt
+        updatedAt
+        event {
+          nextToken
         }
         icon {
           userImageId
@@ -671,30 +416,6 @@ export const onDeleteComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        status
-        event {
-          eventId
-          userId
-          name
-          introduction
-          tag
-          pin
-          lat
-          lng
-          limit
-          reserved
-          start
-          end
-          from
-          to
-          reported
-          owner
-          createdAt
-          updatedAt
-        }
-        owner
-        createdAt
-        updatedAt
       }
       value
       owner

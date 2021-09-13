@@ -25,9 +25,10 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    // { src: '@@/plugins/amplify.js' },
-    { src: '@@/plugins/vue2-google-maps.js', mode: 'client' }
-    // { src: '@@/plugins/persistedstate.js', mode: 'client' }
+    { src: '@@/plugins/amplify.js' },
+    { src: '@@/plugins/vue2-google-maps.js', mode: 'client' },
+    { src: '@@/plugins/persistedstate.js', mode: 'client' },
+    { src: '@@/plugins/vue-datetime-picker.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

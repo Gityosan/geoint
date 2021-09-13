@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="12">
-      <v-card outlined class="base">
+    <v-col cols="12" class="pa-0">
+      <v-card outlined>
         <GmapMap
           map-type-id="roadmap"
           :center="{
@@ -29,6 +29,7 @@
 </template>
 <script>
   export default {
+    middleware: 'initializeTables',
     props: {
       Info: {
         type: Object,
@@ -44,12 +45,17 @@
           zoom: 16
         },
         styleMap: {
-          width: '100%',
-          height: '600px'
+          width: '100vw',
+          height: '100vh'
         },
         mapOptions: {
           streetViewControl: false,
           gestureHandling: 'greedy',
+          fullscreenControl: false,
+          mapTypeControl: false,
+          zoomControlOptions: {
+            position: google.maps.ControlPosition.TOP_RIGHT
+          },
           styles: []
         }
       }
