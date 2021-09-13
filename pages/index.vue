@@ -28,6 +28,9 @@
   </v-row>
 </template>
 <script>
+  import { API, Storage } from 'aws-amplify'
+  import { listEvents, getUser } from '@@/src/graphql/queries'
+  import { createEvent, createEventImage } from '@@/src/graphql/mutations'
   export default {
     middleware: 'initializeTables',
     props: {
@@ -53,25 +56,20 @@
           gestureHandling: 'greedy',
           fullscreenControl: false,
           mapTypeControl: false,
-          zoomControlOptions: {
-            position: google.maps.ControlPosition.TOP_RIGHT
-          },
+          // zoomControlOptions: {
+          //   position: 'google.maps.ControlPosition.TOP_RIGHT'
+          // },
           styles: []
         },
         events: []
       }
-    },
-    async created() {
-      await API.graphql({
-        query: listEvents
-      }).then(async (res) => {
-        this.events = await res.data.listEvents.items
-      })
     }
+    // async created() {
+    //   await API.graphql({
+    //     query: listEvents
+    //   }).then(async (res) => {
+    //     this.events = await res.data.listEvents.items
+    //   })
+    // }
   }
 </script>
-<style lang="scss" scoped>
-  .base {
-    min-height: 80vh;
-  }
-</style>

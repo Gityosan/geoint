@@ -5,6 +5,7 @@ const { GOOGLE_MAPS_JS_API_KEY } = process.env
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   ssr: false,
+  target: 'server',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
