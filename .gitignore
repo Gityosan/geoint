@@ -66,7 +66,7 @@ typings/
 .next
 
 # nuxt.js build output
-# .nuxt
+.nuxt
 /.nuxt/*
 !/.nuxt/.gitkeep
 
@@ -100,7 +100,9 @@ amplify/backend/amplify-meta.json
 amplify/backend/awscloudformation
 amplify/backend/.temp
 build/
-dist/
+# dist/
+/dist/*
+!/dist/.gitkeep
 node_modules/
 aws-exports.js
 awsconfiguration.json
