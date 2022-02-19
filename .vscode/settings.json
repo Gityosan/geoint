@@ -1,4 +1,8 @@
 {
+  "typescript.format.insertSpaceAfterSemicolonInForStatements": false,
+  "javascript.format.insertSpaceAfterSemicolonInForStatements": false,
+  "editor.tabSize": 2,
+  "editor.hover.enabled": false,
   "files.exclude": {
     "amplify/.config": true,
     "amplify/**/*-parameters.json": true,
@@ -8,11 +12,16 @@
     "amplify/backend/amplify-meta.json": true,
     "amplify/backend/awscloudformation": true
   },
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.fixAll.stylelint": true
+    "source.fixAll.stylelint": true,
+    "source.fixAll.eslint": true
   },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "vetur.format.enable": false,
-  "stylelint.autoFixOnSave": true
+  "editor.guides.bracketPairs": true,
+  "git.ignoreLimitWarning": true,
+  "stylelint.validate": ["css", "scss"],
+  "css.validate": false,
+  "scss.validate": false
 }

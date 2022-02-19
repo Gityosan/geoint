@@ -1,85 +1,102 @@
 <template>
-  <v-card width="400px" class="mx-auto mt-5 sign-in" flat>
-    <v-card-title>
-      <h1 class="display-1">Login</h1>
-    </v-card-title>
-    <v-card-text>
-      <v-form v-model="valid" ref="form" lazy-validation>
-        <v-text-field
-          v-model="username"
-          :rules="emailRules"
-          label="メールアドレス"
-          required
-        />
-        <v-text-field
-          v-model="password"
-          :append-icon="passwordVisible ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[passwordRules.required, passwordRules.min]"
-          :type="passwordVisible ? 'text' : 'password'"
-          name="password"
-          label="パスワード"
-          hint="少なくも8文字以上必要です"
-          counter
-          @click:append="passwordVisible = !passwordVisible"
-          required
-        />
-        <v-row justify="center" align="center">
-          <v-btn
-            :disabled="!valid"
-            @click="submit"
-            color="primary"
-            width="40vw"
-            rounded
-            class="mt-5 mr-3 ml-3"
-          >
-            Login
-          </v-btn>
-        </v-row>
-      </v-form>
+  <v-form
+    ref="signIn"
+    v-model="valid"
+    lazy-validation
+    class="d-flex flex-wrap flex-row justify-space-around"
+  >
+    <v-card-text class="px-0 px-sm-4 text-caption text-sm-body-2">
+      メールアドレス
+      <v-text-field
+        v-model.trim.lazy="username"
+        color="#262626"
+        :rules="emailRules"
+        type="text"
+        dense
+        @keydown="ctrlEnterSubmit($event)"
+      />
     </v-card-text>
-  </v-card>
+    <v-card-text class="px-0 px-sm-4 text-caption text-sm-body-2">
+      パスワード
+      <v-text-field
+        v-model.trim.lazy="password"
+        color="#262626"
+        :append-icon="passwordVisible ? 'mdi-eye' : 'mdi-eye-off'"
+        :rules="[passwordRules.required, passwordRules.min]"
+        :type="passwordVisible ? 'text' : 'password'"
+        dense
+        :autocomplete="passwordVisible ? 'username' : 'current-password'"
+        @click:append="passwordVisible = !passwordVisible"
+        @keydown="ctrlEnterSubmit($event)"
+      />
+    </v-card-text>
+    <v-btn
+      :disabled="!valid"
+      color="#262626"
+      depressed
+      dense
+      outlined
+      @click="submit"
+    >
+      ログイン
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
-  export default {
-    name: 'SignIn',
-    data() {
+export default {
+  name: 'SignIn',
+  data() {
+    return {
+      valid: false,
+      username: '',
+      password: '',
+      passwordVisible: false
+    }
+  },
+  computed: {
+    emailRules() {
+      return [
+        (v) => !!v || 'メールアドレスは必須項目です',
+        (v) => /.+@.+/.test(v) || '有効なメールアドレスを入力してください'
+      ]
+    },
+    passwordRules() {
       return {
-        valid: false,
-        username: '',
-        password: '',
-        passwordVisible: false
+        required: (value) => !!value || 'パスワードは必須項目です',
+        min: (v) => (!v ? true : (v && v.length >= 8) || '8文字以上必要です'),
+        checkPassword: (v) =>
+          /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\\d)[a-zA-Z\\d]{8,32}$/.test(v) ||
+          '半角数字・半角英字の大文字・小文字をそれぞれ１文字以上含んでください'
+      }
+    }
+  },
+  mounted() {
+    this.$refs.signIn.reset()
+  },
+  methods: {
+    submit() {
+      if (this.$refs.signIn.validate()) {
+        // console.log(
+        //   `SIGN IN username: ${this.username}, password: ${this.password}`
+        // )
+        this.$store.dispatch('signIn', {
+          username: this.username,
+          password: this.password
+        })
+      } else {
+        alert(
+          'ステータス：validation Error \nメッセージ：必要項目が全て正しく入力されているか確認して下さい。'
+        )
       }
     },
-    computed: {
-      emailRules() {
-        return [
-          (v) => !!v || 'メールアドレスは必須項目です',
-          (v) => /.+@.+/.test(v) || '有効なメールアドレスを入力してください'
-        ]
-      },
-      passwordRules() {
-        return {
-          required: (value) => !!value || 'パスワードは必須項目です',
-          min: (v) => v.length >= 8 || '少なくも8文字以上必要です',
-          checkPassword: (v) =>
-            /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\\d)[a-zA-Z\\d]{8,32}$/.test(v) ||
-            '半角数字・半角英字の大文字・小文字をそれぞれ１文字以上含んでください'
-        }
-      }
-    },
-    methods: {
-      submit() {
-        if (this.$refs.form.validate()) {
-          // console.log(
-          //   `SIGN IN username: ${this.username}, password: ${this.password}`
-          // )
-          this.$store.dispatch('signIn', {
-            username: this.username,
-            password: this.password
-          })
+    ctrlEnterSubmit(event) {
+      if (event.ctrlKey) {
+        if (event.key === 'Enter') {
+          this.submit()
         }
       }
     }
   }
+}
 </script>

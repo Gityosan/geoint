@@ -1,24 +1,20 @@
-import { Auth } from 'aws-amplify'
+import { Auth, Storage } from 'aws-amplify'
+
 export const state = () => ({
   userInfo: {},
   isSignedIn: false,
   result: {},
   owner: '',
   identityId: '',
-  userId: '',
+  clinicId: '',
+  config: {},
   isMaster: false,
   plan: '',
-  limitAws: 100,
-  username: '',
-  password: '',
-  editProfile: false,
-  editEvent: false
+  planForSort: 0,
+  routesJson: [],
 })
-// 状態を更新するための処理
+
 export const mutations = {
-  setLimitAws(state, limitAws = state.limitAws) {
-    state.limitAws = limitAws
-  },
   setUserInfo(state, userInfo = state.userInfo) {
     state.userInfo = userInfo
   },
@@ -34,37 +30,41 @@ export const mutations = {
   setIdentityId(state, identityId = state.identityId) {
     state.identityId = identityId
   },
-  setUserId(state, userId = state.userId) {
-    state.userId = userId
+  setClinicId(state, clinicId = state.clinicId) {
+    state.clinicId = clinicId
+  },
+  setConfig(state, config = state.config) {
+    state.config = config
   },
   setIsMaster(state, isMaster = state.isMaster) {
     state.isMaster = isMaster
   },
-  setUsername(state, username = state.username) {
-    state.username = username
+  setPlan(state, plan = state.plan) {
+    state.plan = plan
   },
-  setPassword(state, password = state.password) {
-    state.password = password
+  setPlanForSort(state, planForSort = state.planForSort) {
+    state.planForSort = planForSort
   },
-  setEditProfile(state, editProfile = state.editProfile) {
-    state.editProfile = editProfile
+  setRoutesJson(state, routesJson = state.routesJson) {
+    state.routesJson = routesJson
   },
-  setEditEvent(state, editEvent = state.editEvent) {
-    state.editEvent = editEvent
-  }
 }
+
 export const actions = {
   async signUp({ commit }, { username, password }) {
     await Auth.signUp({
-      username: username,
-      password: password
+      username,
+      password,
     })
       .then((e) => {
         commit('setResult', e)
+        alert(
+          'アカウントを仮作成して、確認コードをメールアドレス宛にに送りました。\nご確認ください。'
+        )
       })
-      .catch((error) => {
-        this.error = error
-        switch (error.code) {
+      .catch((e) => {
+        alert('ステータス：' + e.code + '\nメッセージ：' + e.message)
+        switch (e.code) {
           case 'UsernameExistsException':
             // ユーザープール内に既に同じ username が存在する場合に起こる。
             return '既に同じメールアドレスのアカウントが存在します'
@@ -77,114 +77,132 @@ export const actions = {
             return '必要な項目が足りないか、正しく認識することができませんでした'
           default:
             // その他のエラー
-            console.log(error.message)
-            commit('setResult', error)
+            console.log(e.message)
+            commit('setResult', e)
         }
+        throw new Error('error')
       })
   },
   async confirmSignUp({ commit }, { username, passcode }) {
     await Auth.confirmSignUp(username, passcode)
       .then((e) => {
         commit('setResult', e)
+        alert('認証できました。')
       })
-      .catch((error) => {
-        this.error = error
-        switch (error.code) {
-          case 'CodeMismatchException':
-            // 無効なコードが入力された場合に起こる。
-            return '無効なコードが入力されました'
-          case 'LimitExceededException':
-            // コードを間違え続けた場合に起こる。
-            return '規定回数以上コードを間違えて入力されました'
-          case 'ExpiredCodeException':
-            // コードが期限切れ（24時間をオーバー）した場合に起こる。
-            // 注) username が存在しない・無効化されている場合にも起こる。
-            return 'コードの期限が切れているか、登録いただいたメールアドレスが存在しません'
-          case 'NotAuthorizedException':
-            // 既にステータスが CONFIRMED になっている場合に起こる。
-            return '既に確認済みです'
-          case 'CodeDeliveryFailureException':
-            // 検証コードの送信に失敗した場合に起こる。
-            return '検証コードの送信に失敗しました'
-          default:
-            // その他のエラー
-            console.log(error.message)
-            commit('setResult', error)
-        }
+      .catch((e) => {
+        alert('ステータス：' + e.code + '\nメッセージ：' + e.message)
+        throw new Error('error')
+        // switch (e.code) {
+        //   case 'CodeMismatchException':
+        //     // 無効なコードが入力された場合に起こる。
+        //     return '無効なコードが入力されました'
+        //   case 'LimitExceededException':
+        //     // コードを間違え続けた場合に起こる。
+        //     return '規定回数以上コードを間違えて入力されました'
+        //   case 'ExpiredCodeException':
+        //     // コードが期限切れ（24時間をオーバー）した場合に起こる。
+        //     // 注) username が存在しない・無効化されている場合にも起こる。
+        //     return 'コードの期限が切れているか、登録いただいたメールアドレスが存在しません'
+        //   case 'NotAuthorizedException':
+        //     // 既にステータスが CONFIRMED になっている場合に起こる。
+        //     return '既に確認済みです'
+        //   case 'CodeDeliveryFailureException':
+        //     // 確認コードの送信に失敗した場合に起こる。
+        //     return '認証コードの送信に失敗しました'
+        //   default:
+        //     // その他のエラー
+        //     console.log(e.message)
+        //     commit('setResult', e)
+        // }
       })
   },
-  async signIn({ commit, dispatch }, { username, password }) {
+  async signIn({ state, commit, dispatch }, { username, password }) {
     await Auth.signIn(username, password)
-      .then((user) => {
-        dispatch('initializeStore')
+      .then(async (user) => {
+        if (state.config.emergency) {
+          await dispatch('signOut')
+        }
+        await dispatch('initializeStore')
         if (
           user.signInUserSession.accessToken.payload['cognito:groups'] &&
           user.signInUserSession.accessToken.payload['cognito:groups'][0] ===
             'Master'
         ) {
+          alert(
+            'Masterアカウントでログインしようとしています!\nこのアカウントでいかなる変更も保存も行わないでください!'
+          )
           commit('setIsMaster', true)
         } else {
           commit('setIsMaster', false)
         }
+        let routes = await Storage.get('routes.json')
+        routes = await this.$axios.get(routes)
+        commit('setRoutesJson', routes.data)
         commit('setIsSignedIn', true)
-        commit('setUsername', username)
-        commit('setPassword', password)
         commit('setUserInfo', user.attributes)
       })
-      .catch((error) => {
-        console.log('Error:' + error.message)
-        commit('setResult', error)
-        $nuxt.$router.push('/login/')
+      .catch((e) => {
+        alert('ステータス：' + e.code + '\nメッセージ：' + e.message)
+        commit('setResult', e)
+        throw new Error('error')
       })
   },
   async resendSignUp({ commit }, { username }) {
     await Auth.resendSignUp(username)
-      .then((e) => {
-        commit('setResult', e)
+      .then(() => {
+        alert('確認コードを再送信しました。')
       })
-      .catch((error) => {
-        switch (error.code) {
+      .catch((e) => {
+        switch (e.code) {
           case 'CodeDeliveryFailureException':
-            // 検証コードの送信に失敗した場合に起こる。
-            return '検証コードの送信に失敗しました'
+            // 確認コードの送信に失敗した場合に起こる。
+            alert(
+              'ステータス：' +
+                e.code +
+                '\nメッセージ：確認コードの送信に失敗しました。'
+            )
+            return '確認コードの送信に失敗しました'
           default:
             // その他のエラー
-            console.log(error.message)
-            commit('setResult', error)
+            alert('ステータス：' + e.code + '\nメッセージ：' + e.message)
+            commit('setResult', e)
         }
+        throw new Error('error')
       })
   },
-  async signOut() {
-    try {
-      await Auth.signOut()
-    } catch (error) {
-      console.log(error.message)
-      commit('setResult', error)
-    }
-  },
-  async updateUserAttributes({ commit }, { user, email }) {
-    await Auth.updateUserAttributes({
-      user: user,
-      attributes: {
-        email: email
-      }
+  async signOut({ commit }) {
+    await Auth.signOut().catch((e) => {
+      alert('ステータス：' + e.code + ' \nメッセージ：' + e.message)
+      commit('setResult', e)
+      throw new Error('error')
     })
-      .then((e) => {
-        commit('setResult', e)
+  },
+  async updateUserAttributes({ commit }, { email }) {
+    const user = await Auth.currentAuthenticatedUser()
+    await Auth.updateUserAttributes(user, {
+      email,
+    })
+      .then(() => {
+        alert('メールアドレスを変更しました。')
       })
-      .catch((error) => {
-        console.log(error.message)
-        commit('setResult', error)
+      .catch((e) => {
+        alert('ステータス：' + e.code + '\nメッセージ：' + e.message)
+        commit('setResult', e)
+        throw new Error('error')
       })
   },
-  async changePassword({ commit }, { user, oldPassword, newPassword }) {
-    await Auth.changePassword(user, oldPassword, newPassword)
-      .then((e) => {
-        commit('setResult', e)
+  async changePassword({ commit }, { oldPassword, newPassword }) {
+    await Auth.currentAuthenticatedUser()
+      .then((user) => {
+        return Auth.changePassword(user, oldPassword, newPassword)
       })
-      .catch((error) => {
-        console.log(error.message)
-        commit('setResult', error)
+      .then(() => {
+        alert('パスワードを変更しました。')
+      })
+      .catch((e) => {
+        alert('ステータス：' + e.code + ' \nメッセージ：' + e.message)
+        commit('setResult', e)
+        throw new Error('error')
       })
   },
   initializeStore({ commit }) {
@@ -192,21 +210,27 @@ export const actions = {
     commit('setResult', {})
     commit('setOwner', '')
     commit('setIdentityId', '')
-    commit('setUserId', '')
+    commit('setClinicId', '')
+    commit('setConfig', {})
     commit('setPlan', '')
+    commit('setPlanForSort', 0)
     commit('setIsMaster', false)
-    commit('setEditProfile', false)
-    commit('setEditEvent', false)
-  }
+  },
+  // async sendWebhook() {
+  //   const config = {
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-type': 'application/json'
+  //     }
+  //   }
+  //   await this.$axios.post('/webhook', {}, config)
+  // }
 }
 export const getters = {
   isSignedIn: (state) => {
     return state.isSignedIn
   },
-  editEvent: (state) => {
-    return state.editEvent
+  clinicId: (state) => {
+    return state.clinicId
   },
-  editProfile: (state) => {
-    return state.editProfile
-  }
 }

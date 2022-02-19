@@ -2,14 +2,15 @@ projects:
   samplegeoint:
     schemaPath: src/graphql/schema.json
     includes:
-      - src/graphql/**/*.js
+      - src/graphql/flow/**/*.js
     excludes:
       - ./amplify/**
     extensions:
       amplify:
-        codeGenTarget: javascript
-        generatedFileName: ''
-        docsFilePath: src/graphql
+        codeGenTarget: flow
+        generatedFileName: src/API.js
+        docsFilePath: src/graphql/flow
+        maxDepth: 9
   geoint:
     schemaPath: src/graphql/schema.json
     includes:
