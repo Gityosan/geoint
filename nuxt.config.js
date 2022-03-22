@@ -1,6 +1,4 @@
 import colors from 'vuetify/es5/util/colors'
-import StylelintPlugin from 'stylelint-webpack-plugin'
-const { GOOGLE_MAPS_JS_API_KEY } = process.env
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -17,7 +15,7 @@ export default {
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/icon.png' }]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -25,10 +23,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@@/plugins/amplify.js' },
+    // { src: '@@/plugins/amplify.js' },
     { src: '@@/plugins/vue2-google-maps.js', mode: 'client' },
-    { src: '@@/plugins/persistedstate.js', mode: 'client' },
-    { src: '@@/plugins/vue-datetime-picker.js', mode: 'client' }
+    { src: '@@/plugins/persistedstate.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -42,6 +39,7 @@ export default {
     '@nuxtjs/stylelint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify'
+    // '@nuxt/postcss8'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -53,7 +51,7 @@ export default {
   ],
 
   env: {
-    GOOGLE_MAPS_JS_API_KEY
+    GOOGLE_MAPS_JS_API_KEY: process.env.GOOGLE_MAPS_JS_API_KEY
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -62,13 +60,22 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      lang: 'ja'
+      name: 'Geoint',
+      lang: 'ja',
+      short_name: 'Geoint',
+      title: 'Geoint',
+      'og:title': 'Geoint',
+      description: 'Geoint',
+      'og:description': 'Geoint',
+      theme_color: '#ffffff',
+      background_color: '#ffffff'
     }
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
     theme: {
       dark: false,
       light: {
@@ -85,22 +92,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    extend(config, ctx) {
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-        config.plugins.push(
-          new StylelintPlugin({
-            files: ['**/*.vue', '**/*.scss']
-          })
-        )
-      }
-    },
-    vendor: ['vue2-google-maps'],
     transpile: [/^vue2-google-maps($|\/)/]
   }
 }

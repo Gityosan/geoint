@@ -1,6 +1,9 @@
 <template>
   <v-form ref="account" v-model="valid" lazy-validation class="sign_up">
-    <v-card-text class="pa-0 text-caption text-sm-body-2">
+    <v-card-text class="pa-0 pt-4 text-caption text-sm-body-2">
+      1.アカウント作成
+    </v-card-text>
+    <v-card-text class="pa-0 pt-4 text-caption text-sm-body-2">
       メールアドレス
       <v-text-field
         v-model.trim.lazy="username"
@@ -37,12 +40,11 @@
     >
       作成
     </v-btn>
-    <v-divider></v-divider>
     <v-card-text class="pa-0 pt-4 text-caption text-sm-body-2">
-      メールアドレス
-      <v-card-text class="pa-0 pb-4">{{ username }}</v-card-text>
+      2.確認コード検証
+      <!-- <v-card-text class="pa-0 pb-4">{{ username }}</v-card-text> -->
     </v-card-text>
-    <v-card-text class="pa-0 text-caption text-sm-body-2">
+    <v-card-text class="pa-0 pt-4 text-caption text-sm-body-2">
       確認コード
       <v-otp-input
         v-model.lazy="code"
@@ -168,7 +170,7 @@ export default {
 .sign_up {
   width: -webkit-fill-available;
   max-width: 400px;
-  margin: 0 auto 30px;
   padding: 0 16px;
+  margin: 0 auto 30px;
 }
 </style>

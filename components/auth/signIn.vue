@@ -3,9 +3,12 @@
     ref="signIn"
     v-model="valid"
     lazy-validation
-    class="d-flex flex-wrap flex-row justify-space-around"
+    class="d-flex flex-wrap flex-row justify-space-around sign_in"
   >
-    <v-card-text class="px-0 px-sm-4 text-caption text-sm-body-2">
+    <v-card-text class="pa-0 pt-4 text-caption text-sm-body-2">
+      3.ログイン
+    </v-card-text>
+    <v-card-text class="pa-0 pt-4 text-caption text-sm-body-2">
       メールアドレス
       <v-text-field
         v-model.trim.lazy="username"
@@ -16,7 +19,7 @@
         @keydown="ctrlEnterSubmit($event)"
       />
     </v-card-text>
-    <v-card-text class="px-0 px-sm-4 text-caption text-sm-body-2">
+    <v-card-text class="pa-0 text-caption text-sm-body-2">
       パスワード
       <v-text-field
         v-model.trim.lazy="password"
@@ -36,6 +39,8 @@
       depressed
       dense
       outlined
+      class="mx-0 mt-5 mb-10 px-0"
+      width="-webkit-fill-available"
       @click="submit"
     >
       ログイン
@@ -100,3 +105,11 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.sign_in {
+  width: -webkit-fill-available;
+  max-width: 400px;
+  padding: 0 16px;
+  margin: 0 auto 30px;
+}
+</style>
