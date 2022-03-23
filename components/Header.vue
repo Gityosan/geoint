@@ -5,24 +5,11 @@
       <v-spacer></v-spacer>
       <v-app-bar-title class="font-weight-bold text-h5">Geoint</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        v-if="$store.getters.isSignedIn"
-        icon
-        @click="$store.dispatch('signOut')"
-      >
-        <v-icon>mdi-account-circle-outline</v-icon>
+      <v-btn v-if="$store.getters.isSignedIn" icon nuxt to="/user">
+        <v-icon>mdi-account-edit-outline</v-icon>
       </v-btn>
-      <v-btn
-        v-else
-        icon
-        @click="
-          $store.dispatch('signIn', {
-            username: $store.state.username,
-            password: $store.state.password
-          })
-        "
-      >
-        <v-icon>mdi-account-circle-outline</v-icon>
+      <v-btn v-else icon nuxt to="/login">
+        <v-icon>mdi-login-variant</v-icon>
       </v-btn>
     </v-app-bar>
 

@@ -38,8 +38,8 @@ export default {
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify'
-    // '@nuxt/postcss8'
+    '@nuxtjs/vuetify',
+    '@nuxt/postcss8'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

@@ -1,17 +1,9 @@
-import { Auth, Storage } from 'aws-amplify'
+import { Auth } from 'aws-amplify'
 
 export const state = () => ({
   userInfo: {},
   isSignedIn: false,
-  result: {},
-  owner: '',
-  identityId: '',
-  clinicId: '',
-  config: {},
-  isMaster: false,
-  plan: '',
-  planForSort: 0,
-  routesJson: [],
+  owner: ''
 })
 
 export const mutations = {
@@ -21,43 +13,18 @@ export const mutations = {
   setIsSignedIn(state, isSignedIn = state.isSignedIn) {
     state.isSignedIn = isSignedIn
   },
-  setResult(state, result = state.result) {
-    state.result = result
-  },
   setOwner(state, owner = state.owner) {
     state.owner = owner
-  },
-  setIdentityId(state, identityId = state.identityId) {
-    state.identityId = identityId
-  },
-  setClinicId(state, clinicId = state.clinicId) {
-    state.clinicId = clinicId
-  },
-  setConfig(state, config = state.config) {
-    state.config = config
-  },
-  setIsMaster(state, isMaster = state.isMaster) {
-    state.isMaster = isMaster
-  },
-  setPlan(state, plan = state.plan) {
-    state.plan = plan
-  },
-  setPlanForSort(state, planForSort = state.planForSort) {
-    state.planForSort = planForSort
-  },
-  setRoutesJson(state, routesJson = state.routesJson) {
-    state.routesJson = routesJson
-  },
+  }
 }
 
 export const actions = {
   async signUp({ commit }, { username, password }) {
     await Auth.signUp({
       username,
-      password,
+      password
     })
       .then((e) => {
-        commit('setResult', e)
         alert(
           'アカウントを仮作成して、確認コードをメールアドレス宛にに送りました。\nご確認ください。'
         )
@@ -78,7 +45,6 @@ export const actions = {
           default:
             // その他のエラー
             console.log(e.message)
-            commit('setResult', e)
         }
         throw new Error('error')
       })
@@ -86,7 +52,6 @@ export const actions = {
   async confirmSignUp({ commit }, { username, passcode }) {
     await Auth.confirmSignUp(username, passcode)
       .then((e) => {
-        commit('setResult', e)
         alert('認証できました。')
       })
       .catch((e) => {
@@ -112,38 +77,18 @@ export const actions = {
         //   default:
         //     // その他のエラー
         //     console.log(e.message)
-        //     commit('setResult', e)
         // }
       })
   },
-  async signIn({ state, commit, dispatch }, { username, password }) {
+  async signIn({ commit, dispatch }, { username, password }) {
     await Auth.signIn(username, password)
       .then(async (user) => {
-        if (state.config.emergency) {
-          await dispatch('signOut')
-        }
         await dispatch('initializeStore')
-        if (
-          user.signInUserSession.accessToken.payload['cognito:groups'] &&
-          user.signInUserSession.accessToken.payload['cognito:groups'][0] ===
-            'Master'
-        ) {
-          alert(
-            'Masterアカウントでログインしようとしています!\nこのアカウントでいかなる変更も保存も行わないでください!'
-          )
-          commit('setIsMaster', true)
-        } else {
-          commit('setIsMaster', false)
-        }
-        let routes = await Storage.get('routes.json')
-        routes = await this.$axios.get(routes)
-        commit('setRoutesJson', routes.data)
         commit('setIsSignedIn', true)
         commit('setUserInfo', user.attributes)
       })
       .catch((e) => {
         alert('ステータス：' + e.code + '\nメッセージ：' + e.message)
-        commit('setResult', e)
         throw new Error('error')
       })
   },
@@ -165,7 +110,6 @@ export const actions = {
           default:
             // その他のエラー
             alert('ステータス：' + e.code + '\nメッセージ：' + e.message)
-            commit('setResult', e)
         }
         throw new Error('error')
       })
@@ -173,21 +117,19 @@ export const actions = {
   async signOut({ commit }) {
     await Auth.signOut().catch((e) => {
       alert('ステータス：' + e.code + ' \nメッセージ：' + e.message)
-      commit('setResult', e)
       throw new Error('error')
     })
   },
   async updateUserAttributes({ commit }, { email }) {
     const user = await Auth.currentAuthenticatedUser()
     await Auth.updateUserAttributes(user, {
-      email,
+      email
     })
       .then(() => {
         alert('メールアドレスを変更しました。')
       })
       .catch((e) => {
         alert('ステータス：' + e.code + '\nメッセージ：' + e.message)
-        commit('setResult', e)
         throw new Error('error')
       })
   },
@@ -201,36 +143,16 @@ export const actions = {
       })
       .catch((e) => {
         alert('ステータス：' + e.code + ' \nメッセージ：' + e.message)
-        commit('setResult', e)
         throw new Error('error')
       })
   },
   initializeStore({ commit }) {
     commit('setUserInfo', {})
-    commit('setResult', {})
     commit('setOwner', '')
-    commit('setIdentityId', '')
-    commit('setClinicId', '')
-    commit('setConfig', {})
-    commit('setPlan', '')
-    commit('setPlanForSort', 0)
-    commit('setIsMaster', false)
-  },
-  // async sendWebhook() {
-  //   const config = {
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-type': 'application/json'
-  //     }
-  //   }
-  //   await this.$axios.post('/webhook', {}, config)
-  // }
+  }
 }
 export const getters = {
   isSignedIn: (state) => {
     return state.isSignedIn
-  },
-  clinicId: (state) => {
-    return state.clinicId
-  },
+  }
 }

@@ -3,12 +3,12 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
-    node: true,
+    node: true
   },
   extends: ['@nuxtjs', 'plugin:nuxt/recommended', 'prettier'],
   parserOptions: {
     parser: '@babel/eslint-parser',
-    requireConfigFile: false,
+    requireConfigFile: false
   },
   // required to lint *.vue files
   plugins: [],
@@ -25,8 +25,21 @@ module.exports = {
     'vue/attribute-hyphenation': 0,
     'vue/no-v-html': 0,
     'vue/multi-word-component-names': 0,
+    'vue/no-reserved-props': [
+      'error',
+      {
+        vueVersion: 2 // or 3
+      }
+    ],
+    'vue/first-attribute-linebreak': [
+      'error',
+      {
+        singleline: 'ignore',
+        multiline: 'ignore'
+      }
+    ],
     // nuxt settings
     'nuxt/no-globals-in-created': 0,
-    'nuxt/no-env-in-hooks': 0,
-  },
+    'nuxt/no-env-in-hooks': 0
+  }
 }
