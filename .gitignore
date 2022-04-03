@@ -111,3 +111,6 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+terraform/.terraform
+terraform/terraform.tfvars
+terraform/terraform.tfstate*
