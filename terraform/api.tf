@@ -1,28 +1,28 @@
 
 variable "aws_dynamodb_table_todos_name" {
-  type    = "string"
+  type    = string
   default = "TodoTable"
 }
 
 variable "aws_iam_role_appsync_todos_api_name" {
-  type        = "string"
+  type        = string
   default     = "appsync_todos_api_role"
   description = "Appsync execution role"
 }
 
 variable "aws_iam_role_policy_appsync_todos_api_name" {
-  type        = "string"
+  type        = string
   default     = "appsync_todos_api_role_policy"
   description = "Appsync execution role policy"
 }
 
 variable "aws_appsync_datasource_todos_name" {
-  type    = "string"
+  type    = string
   default = "TodoDatasource"
 }
 
 variable "aws_appsync_graphql_api_todos_name" {
-  type    = "string"
+  type    = string
   default = "todos_api"
 }
 
